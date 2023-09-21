@@ -37,7 +37,11 @@ public class TeacherController {
 		
 	}
 	@RequestMapping("/Teacher/{id}/Courses")
-	public Set<Course> getCoursebyTeacherId(@PathVariable Long id) {
+	public Set<String> getCoursebyTeacherId(@PathVariable Long id) {
 		return teacherService.getCoursebyTeacherId(id);
+	}
+	@RequestMapping(method=RequestMethod.DELETE,value="/Teacher/{id}")
+	public void deleteTeacher(@PathVariable Long id) {
+		teacherService.deleteTeacher(id);
 	}
 }

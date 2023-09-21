@@ -42,8 +42,12 @@ public class StudentController {
 		
 	}
 	@RequestMapping("/Student/{id}/Courses")
-	public Set<Course> getCoursebyStudentId(@PathVariable Long id) {
+	public Set<String> getCoursebyStudentId(@PathVariable Long id) {
 		return studentService.getCoursebyStudentId(id);
+	}
+	@RequestMapping(method=RequestMethod.DELETE,value="/Student/{id}")
+	public void deleteStudent(@PathVariable Long id) {
+		studentService.deleteStudent(id);
 	}
 	
 }

@@ -46,4 +46,8 @@ public class CourseController {
 										@PathVariable Long t_id) {
 		courseService.enrollTeacher(c_id,t_id);
 	}
+	@RequestMapping(method=RequestMethod.DELETE,value="/Course/{id}")
+	public void deleteCourse(@PathVariable Long id) {
+		courseService.deleteCourse(id);
+	}
 }

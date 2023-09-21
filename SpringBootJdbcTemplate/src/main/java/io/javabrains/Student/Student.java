@@ -1,6 +1,7 @@
 package io.javabrains.Student;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +55,15 @@ public class Student {
 		return courses;
 	}
 
+
+	public Set<String> extractCourseNames() {
+	    	Set<String> courseNames = new HashSet<>();
+	        for (Course course : courses) {
+	            courseNames.add(course.getC_Name());
+	        }
+	        return courseNames;
+	    }
+	
 
 
 	public Student() {

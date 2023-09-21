@@ -36,10 +36,20 @@ public class TeacherService {
 	}
 
 
-	public Set<Course> getCoursebyTeacherId(Long id) {
+	public Set<String> getCoursebyTeacherId(Long id) {
 		Teacher teacher = teacherRepository.findById(id).orElse(null);
-		return teacher.getCourses();
+		return teacher.extractCourseNames();
+	}
+
+	public void deleteTeacher(Long id) {
+		Teacher teacher = teacherRepository.findById(id).orElse(null);
+		Set<Course> teacherCourses = teacher.getCourses();
+		for (Course course : teacherCourses) {
+	        course.setTeacherToNULL();
+		teacherRepository.deleteById(id);
+		
 	}
 
 
+}
 }

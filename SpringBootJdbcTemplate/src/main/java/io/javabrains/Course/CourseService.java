@@ -14,6 +14,8 @@ import io.javabrains.Teacher.TeacherRepository;
 @Service
 public class CourseService {
 
+	private static final Teacher NULL = null;
+
 	@Autowired
 	private CourseRepository courseRepository;
 	
@@ -41,11 +43,16 @@ public class CourseService {
 		courseRepository.save(course);
 	}
 
-	public Course enrollStudent(Long c_id, Long s_id) {
+	public void enrollStudent(Long c_id, Long s_id) {
 		Student student = studentRepository.findById(s_id).get();
 		Course	course = courseRepository.findById(c_id).get();
+		if(course.getTeacher()== NULL) {
+			;
+		}
+		else {
 		course.enrollStudent(student);
-		return courseRepository.save(course);
+		courseRepository.save(course);
+		}
 	}
 
 	public Course enrollTeacher(Long c_id, Long t_id) {
@@ -53,6 +60,15 @@ public class CourseService {
 		Course	course = courseRepository.findById(c_id).get();
 		course.enrollTeacher(teacher);
 		return courseRepository.save(course);
+	}
+
+	public void deleteCourse(Long id) {
+		Course course = courseRepository.findById(id).orElse(null);
+		course.getEnrolledStudents();
+		course.setEnrolledStudents(null);
+		course.setTeacherToNULL();
+		courseRepository.deleteById(id);
+		
 	}
 	
 

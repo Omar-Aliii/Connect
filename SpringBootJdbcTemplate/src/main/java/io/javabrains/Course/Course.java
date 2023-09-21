@@ -20,6 +20,8 @@ import jakarta.persistence.Table;
 @Table(name = "Course")
 public class Course {
 
+	private static final Teacher Null = null;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "C_ID")
@@ -40,12 +42,28 @@ public class Course {
 	
 	private Set<Student> enrolledStudents = new HashSet<>();
 	
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+	public void setTeacherToNULL() {
+		teacher = Null;
+	}
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "t_Id", referencedColumnName = "T_Id")
 	private Teacher teacher;
 	
 	public Set<Student> getEnrolledStudents() {
 		return enrolledStudents;
+	}
+	
+
+	public void setEnrolledStudents(Set<Student> enrolledStudents) {
+		this.enrolledStudents = enrolledStudents;
 	}
 
 	public String getC_Name() {

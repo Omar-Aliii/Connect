@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.javabrains.Course.Course;
+import io.javabrains.Course.CourseRepository;
 
 
 @Service
@@ -16,6 +17,8 @@ public class StudentService {
 	
 		@Autowired
 		private StudentRepository studentRepository;
+		@Autowired
+		private CourseRepository courseRepository;
 		
 		public List<Student> getAllStudents() {
 		List<Student> students = new ArrayList<>();
@@ -35,9 +38,24 @@ public class StudentService {
 			studentRepository.save(student);
 		}
 
-		public Set<Course> getCoursebyStudentId(Long id) {
+		public Set<String> getCoursebyStudentId(Long id) {
 			Student student = studentRepository.findById(id).orElse(null);
-			return student.getCourses();
+			return student.extractCourseNames();
+		}
+
+		public void deleteStudent(Long id) {
+			 List<Course> courses = new ArrayList<>();
+			 courseRepository.findAll().forEach(courses::add);
+			 Student student = studentRepository.findById(id).orElse(null);
+			 for(Course course : courses) {
+				 Set<Student> students = course.getEnrolledStudents();
+				 if(students.contains(student)) {
+					 students.remove(student);
+				 }
+			 course.setEnrolledStudents(students);
+			 }
+			 studentRepository.deleteById(id);
+			 
 		}
 		
 
