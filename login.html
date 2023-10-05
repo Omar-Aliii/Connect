@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="login.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div class="login-page">
+    <div class="form">
+      <form class="login-form">
+        <input id="name" type="text" placeholder="username"/>
+        <input id="password" type="password" placeholder="password"/>
+        <button id="loginButton" type="button">login</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
+
+<script>
+
+let myrequest = new XMLHttpRequest();
+myrequest.open("GET", "http://localhost:8080/Teacher");
+myrequest.send();
+console.log(myrequest);
+var jsonObject = "";
+
+
+myrequest.onreadystatechange = function (){
+  if(this.readyState === 4 && this.status === 200){
+    console.log(this.responseText);
+    jsonObject = JSON.parse(this.responseText);
+  }
+}
+
+function isUserValid(name, password) {
+  for (const user of jsonObject) {
+    if (user.t_Name == name && user.t_Password == password) {
+      console.log("true");
+      redirectToHome();
+    }
+  }
+}
+function redirectToHome() {
+            window.location.href = "home.html";
+        }
+
+
+
+document.getElementById('loginButton').addEventListener('click', function(){
+  const nameInput = document.getElementById('name').value;
+  const passwordInput = document.getElementById('password').value;
+  isUserValid(nameInput,passwordInput);
+})
+
+</script>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Your page title</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/themes/redmond/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.14.0/css/ui.jqgrid.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.14.0/jquery.jqgrid.min.js"></script>
+</head>
+<body>
+    <h1>HOME</h1>
+
+    <!-- Button to load the student list -->
+    <button id="loadStudents">Load Student List</button>
+
+    <!-- Div to hold the jqGrid -->
+    <div id="studentGrid"></div>
+<table id="grid"></table>
+</body>
+</html>
+
+<script>
+
+    $("#loadStudents").on("click", function () {
+        let myrequest = new XMLHttpRequest();
+        myrequest.open("GET", "http://localhost:8080/Student");
+        myrequest.send();
+        console.log(myrequest);
+        var jsonObject = "";
+        myrequest.onreadystatechange = function (){
+            if(this.readyState === 4 && this.status === 200){
+                console.log(this.responseText);
+                jsonObject = JSON.parse(this.responseText);
+                $("#grid").jqGrid({
+                    colModel: [
+                        { name: "f_Name" },
+                        { name: "s_Name" },
+                    ],
+                    data: jsonObject
+                });
+        }
+    }
+
+    });
+
+    </script>
