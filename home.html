@@ -18,11 +18,44 @@
 
     <!-- Div to hold the jqGrid -->
     <div id="studentGrid"></div>
-<table id="grid"></table>
+    <table id="grid"></table>
+    <div class="form">
+    <label for="s_Id">Student Id</label>
+    <input type="text" id="s_Id" name="s_Id"><br><br>
+    <button id="Submit">Submit</button>
+    <table id="grid2"></table>
+</div>
 </body>
 </html>
 
 <script>
+    $("#Submit").on("click", function () {
+        var s_Id = document.getElementById('s_Id').value;
+        let myrequest = new XMLHttpRequest();
+        myrequest.open("GET", "http://localhost:8080/Student/" + s_Id)
+        myrequest.send();
+        console.log(myrequest);
+        var jsonObject2 = "";
+        myrequest.onreadystatechange = function (){
+            if(this.readyState === 4 && this.status === 200){
+                console.log(this.responseText);
+                jsonObject2 = JSON.parse(this.responseText);
+                console.log(jsonObject2)
+                $("#grid2").jqGrid({
+                    colModel: [
+                        { name: "f_Name" },
+                        { name: "s_Name" },
+                        { name: "s_Age" },
+                        { name: "s_Password" },
+                    ],
+                    data: [jsonObject2]
+                });
+                $("#grid2").trigger("reloadGrid");
+        }
+    }
+    });
+
+
 
     $("#loadStudents").on("click", function () {
         let myrequest = new XMLHttpRequest();
@@ -41,6 +74,7 @@
                     ],
                     data: jsonObject
                 });
+
         }
     }
 
